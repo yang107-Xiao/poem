@@ -263,7 +263,7 @@ body{
 
 /* 2) 顶部：白底细边，去祥云叠层与浓阴影 */
 .site-header{
-  background:#fff !important; color: var(--ink) !important;
+  background:#1a8a85 !important; color: var(--ink) !important;
   box-shadow:none !important; border-bottom:1px solid var(--paper-edge) !important;
 }
 .site-header::after{ display:none !important; }
@@ -331,16 +331,29 @@ button:hover{ transform:none !important; filter:brightness(1.02) !important; }
             <option value="人生哲理">人生哲理</option>
             <option value="思乡">思乡</option>
             <option value="自由">自由</option>
+            <option value="战争">战争</option>
+            <option value="励志">励志</option>
+            <option value="历史">历史</option>
+            <option value="宗教与灵性">宗教与灵性</option>
+</select>
+
           </select>
         </div>
         <div class="control-group">
           <label for="author-country">诗人国籍</label>
           <select id="author-country">
-            <option value="">全部国籍</option>
-            <option value="英国">英国</option>
-            <option value="美国">美国</option>
-            <option value="爱尔兰">爱尔兰</option>
-            <option value="法国">法国</option>
+          <option value="">全部国籍</option>
+          <option value="英国">英国</option>
+          <option value="美国">美国</option>
+          <option value="爱尔兰">爱尔兰</option>
+          <option value="法国">法国</option>
+          <option value="加拿大">加拿大</option>
+          <option value="澳大利亚">澳大利亚</option>
+          <option value="新西兰">新西兰</option>
+          <option value="印度">印度</option>
+          <option value="伊朗">伊朗</option>
+</select>
+
           </select>
         </div>
         <div class="control-group">
@@ -402,7 +415,7 @@ button:hover{ transform:none !important; filter:brightness(1.02) !important; }
   </main>
 
   <footer>
-    <p>© <span id="year"></span> 经典外文诗歌推荐 · 纸上风雅</p>
+    <p>© <span id="year"></span> 墨未干，诗已远，只剩你与ta隔水相望，同听一声更鼓</p>
   </footer>
 
   <!-- 轻量状态提示 -->
@@ -604,8 +617,317 @@ button:hover{ transform:none !important; filter:brightness(1.02) !important; }
           ["That could abash the little bird", "才能使那小鸟惊悸，"],
           ["That kept so many warm.", "它曾让多少人感到温暖。"]
         ]
+        
+
       }
     ];
+    /* ========== 扩展诗库（更多国家 & 诗人） ========== */
+const EXTRA_POEMS = [
+  {
+    id: 101,
+    title: { en: "Stopping by Woods on a Snowy Evening", zh: "在一个雪夜林边驻足" },
+    author: { en: "Robert Frost", zh: "罗伯特·弗罗斯特" },
+    country: "美国",
+    type: ["自然","人生哲理"],
+    content: [
+      ["Whose woods these are I think I know.", "我想我知道这些树林是谁的。"],
+      ["His house is in the village though;", "他的房子却在村子里；"],
+      ["He will not see me stopping here", "他不会看到我在此驻足，"],
+      ["To watch his woods fill up with snow.", "看着树林渐被白雪填满。"],
+      ["My little horse must think it queer", "我的小马一定觉得奇怪，"],
+      ["To stop without a farmhouse near", "四下无屋还要停下来，"],
+      ["Between the woods and frozen lake", "在林子与冻湖之间，"],
+      ["The darkest evening of the year.", "在一年中最黑的夜里。"],
+      ["He gives his harness bells a shake", "它把辔铃摇得当啷作响，"],
+      ["To ask if there is some mistake.", "仿佛在问：是不是弄错了？"],
+      ["The only other sound's the sweep", "此外只剩一种声音，轻拂而过，"],
+      ["Of easy wind and downy flake.", "那是和风与绒雪的扫拂。"],
+      ["The woods are lovely, dark and deep,", "树林可爱，幽暗而深邃，"],
+      ["But I have promises to keep,", "但我仍有约要履行，"],
+      ["And miles to go before I sleep,", "在入睡之前还有千里要走，"],
+      ["And miles to go before I sleep.", "在入睡之前还有千里要走。"]
+    ]
+  },
+  {
+    id: 102,
+    title: { en: "Sea-Fever", zh: "海的渴望" },
+    author: { en: "John Masefield", zh: "约翰·梅斯菲尔德" },
+    country: "英国",
+    type: ["自然","自由"],
+    content: [
+      ["I must go down to the seas again, to the lonely sea and the sky,", "我又得下海去了，向那孤独的海与天，"],
+      ["And all I ask is a tall ship and a star to steer her by;", "我所求不过一艘高桅船与一颗指路的星；"],
+      ["And the wheel's kick and the wind's song and the white sail's shaking,", "要舵轮的跳动、风的歌、白帆的战栗，"],
+      ["And a grey mist on the sea's face, and a grey dawn breaking.", "以及海面灰雾与破晓的灰光。"],
+      ["I must go down to the seas again, for the call of the running tide", "我又得下海去了，因为奔潮在召唤，"],
+      ["Is a wild call and a clear call that may not be denied;", "那野性而清亮的呼唤无法拒绝；"],
+      ["And all I ask is a windy day with the white clouds flying,", "我所求不过有风的一天，白云飞扬，"],
+      ["And the flung spray and the blown spume, and the sea-gulls crying.", "飞溅的浪沫、卷起的泡沫、海鸥的叫声。"],
+      ["I must go down to the seas again, to the vagrant gypsy life,", "我又得下海去了，过那浪游的吉普赛人生，"],
+      ["To the gull's way and the whale's way, where the wind's like a whetted knife;", "走海鸥与鲸鱼之路，那里风像磨快的刀；"],
+      ["And all I ask is a merry yarn from a laughing fellow-rover,", "我所求不过伙伴的笑谈一段，"],
+      ["And quiet sleep and a sweet dream when the long trick's over.", "以及值夜结束后的安睡与好梦。"]
+    ]
+  },
+  {
+    id: 103,
+    title: { en: "The New Colossus", zh: "新巨人" },
+    author: { en: "Emma Lazarus", zh: "艾玛·拉撒路" },
+    country: "美国",
+    type: ["自由","历史"],
+    content: [
+      ["Not like the brazen giant of Greek fame,", "并非希腊传说中的铜巨人，"],
+      ["With conquering limbs astride from land to land;", "跨海而立、四分天下；"],
+      ["Here at our sea-washed, sunset gates shall stand", "在这濒海的落日门楣处，将伫立"],
+      ["A mighty woman with a torch, whose flame", "一位手擎火炬的伟岸女子，她的火焰"],
+      ["Is the imprisoned lightning, and her name", "是被囚的闪电，她的名字是"],
+      ["Mother of Exiles. From her beacon-hand", "流亡者之母。从她的灯塔之手"],
+      ["Glows world-wide welcome; her mild eyes command", "迸发世界的欢迎；她温和的双眼俯瞰"],
+      ["The air-bridged harbor that twin cities frame.", "那由双城拱起的飞桥港湾。"],
+      ["\"Keep, ancient lands, your storied pomp!\" cries she", "“古老的国度啊，留着你们的辉煌！”她"],
+      ["With silent lips. \"Give me your tired, your poor,", "以无声的唇这样喊道，“把你们疲惫的、贫穷的，"],
+      ["Your huddled masses yearning to breathe free,", "把蜷缩着渴望自由呼吸的群体，"],
+      ["The wretched refuse of your teeming shore.", "把那喧闹海岸的可怜弃民都送来。"],
+      ["Send these, the homeless, tempest-tost to me,", "把这些无家之人、被风暴颠簸的人交给我，"],
+      ["I lift my lamp beside the golden door!\"", "我在金色的门旁高举灯火！”"]
+    ]
+  },
+  {
+    id: 104,
+    title: { en: "In Flanders Fields", zh: "在佛兰德斯的原野上" },
+    author: { en: "John McCrae", zh: "约翰·麦克雷" },
+    country: "加拿大",
+    type: ["战争","思乡"],
+    content: [
+      ["In Flanders fields the poppies blow,", "在佛兰德斯的原野上，罂粟花开，"],
+      ["Between the crosses, row on row,", "十字架一行又一行，"],
+      ["That mark our place; and in the sky", "标记着我们的所在；而在空中"],
+      ["The larks, still bravely singing, fly", "云雀仍勇敢地歌唱飞翔，"],
+      ["Scarce heard amid the guns below.", "只是枪炮之下几乎听不见。"],
+      ["We are the Dead. Short days ago", "我们是死者。不久之前，"],
+      ["We lived, felt dawn, saw sunset glow,", "我们还活着，感受黎明，看见晚霞，"],
+      ["Loved and were loved, and now we lie", "爱着也被爱着，而今我们长眠"],
+      ["In Flanders fields.", "在佛兰德斯的原野。"],
+      ["Take up our quarrel with the foe:", "接过我们与敌人的争斗吧："],
+      ["To you from failing hands we throw", "从垂落的手里，我们把火炬抛给你们，"],
+      ["The torch; be yours to hold it high.", "由你们高高举起它。"],
+      ["If ye break faith with us who die", "若你们对我们这些死者失信，"],
+      ["We shall not sleep, though poppies grow", "纵有罂粟盛开，我们也不能安睡——"],
+      ["In Flanders fields.", "在佛兰德斯的原野。"]
+    ]
+  },
+  {
+    id: 105,
+    title: { en: "How Do I Love Thee? (Sonnet 43)", zh: "我如何爱你？（第43首十四行诗）" },
+    author: { en: "Elizabeth Barrett Browning", zh: "伊丽莎白·巴雷特·勃朗宁" },
+    country: "英国",
+    type: ["爱情"],
+    content: [
+      ["How do I love thee? Let me count the ways.", "我如何爱你？让我细数其法。"],
+      ["I love thee to the depth and breadth and height", "我爱你到灵魂所能伸抵的"],
+      ["My soul can reach, when feeling out of sight", "深、广与高，当它摸索"],
+      ["For the ends of Being and ideal Grace.", "存在与理想恩典的尽头。"],
+      ["I love thee to the level of everyday's", "我爱你到日常生活最静的需要，"],
+      ["Most quiet need, by sun and candlelight.", "无论阳光照耀，抑或烛光微明。"],
+      ["I love thee freely, as men strive for Right;", "我自由地爱你，如人们为正义而奋斗；"],
+      ["I love thee purely, as they turn from Praise.", "我纯粹地爱你，如他们远离赞誉。"],
+      ["I love thee with the passion put to use", "我以激情爱你，把旧日的哀愁化用，"],
+      ["In my old griefs, and with my childhood's faith.", "并以童年的信心爱你。"],
+      ["I love thee with a love I seemed to lose", "我以似乎曾失去的爱来爱你，"],
+      ["With my lost saints,—I love thee with the breath,", "那随圣徒逝去的爱——我以一生的"],
+      ["Smiles, tears, of all my life!—and, if God choose,", "呼吸、微笑与泪水来爱你；若上帝愿意，"],
+      ["I shall but love thee better after death.", "死后我将更深地爱你。"]
+    ]
+  },
+  {
+    id: 106,
+    title: { en: "A Poison Tree", zh: "一棵毒树" },
+    author: { en: "William Blake", zh: "威廉·布莱克" },
+    country: "英国",
+    type: ["人生哲理"],
+    content: [
+      ["I was angry with my friend;", "我曾对朋友生气；"],
+      ["I told my wrath, my wrath did end.", "我说出怒气，它便消退。"],
+      ["I was angry with my foe:", "我曾对仇敌生气："],
+      ["I told it not, my wrath did grow.", "我不说，于是怒气滋长。"],
+      ["And I watered it in fears,", "我以恐惧浇灌它，"],
+      ["Night and morning with my tears;", "日夜用泪水灌溉；"],
+      ["And I sunned it with smiles,", "又以微笑照晒它，"],
+      ["And with soft deceitful wiles.", "加上柔软却欺骗的招法。"],
+      ["And it grew both day and night,", "它日夜生长，"],
+      ["Till it bore an apple bright;", "直至结出一枚明亮的苹果；"],
+      ["And my foe beheld it shine,", "我的仇敌看见它在发光，"],
+      ["And he knew that it was mine,", "他知道那是我的；"],
+      ["And into my garden stole", "他潜入我的花园，"],
+      ["When the night had veiled the pole;", "当夜色遮蔽北极之时；"],
+      ["In the morning glad I see", "清晨我欢喜看见——"],
+      ["My foe outstretched beneath the tree.", "我的仇敌仰面倒在树下。"]
+    ]
+  },
+  {
+    id: 107,
+    title: { en: "The Red Wheelbarrow", zh: "红色手推车" },
+    author: { en: "William Carlos Williams", zh: "威廉·卡洛斯·威廉斯" },
+    country: "美国",
+    type: ["自然"],
+    content: [
+      ["so much depends", "太多事情取决于"],
+      ["upon", "那在于"],
+      ["a red wheel", "一辆红色的手推"],
+      ["barrow", "车，"],
+      ["glazed with rain", "雨水给它上了"],
+      ["water", "一层光釉，"],
+      ["beside the white", "在白色的"],
+      ["chickens", "鸡群旁。"]
+    ]
+  },
+  {
+    id: 108,
+    title: { en: "To His Coy Mistress", zh: "致他羞怯的情人（节选）" },
+    author: { en: "Andrew Marvell", zh: "安德鲁·玛维尔" },
+    country: "英国",
+    type: ["爱情","人生哲理"],
+    content: [
+      ["Had we but world enough, and time,", "假如我们拥有足够的世界与时间，"],
+      ["This coyness, lady, were no crime.", "你的矜持，夫人，也就无罪。"],
+      ["We would sit down and think which way", "我们可以坐下思量该走哪条路，"],
+      ["To walk and pass our long love's day.", "把漫长的恋日从容打发。"],
+      ["Thou by the Indian Ganges' side", "你可以在恒河之畔采寻红玉，"],
+      ["Shouldst rubies find; I by the tide", "而我在亨伯河边倾诉悲怨；"],
+      ["Of Humber would complain. I would", "我会在洪水之前十年便爱你，"],
+      ["Love you ten years before the flood,", "你愿意的话，可以拒我直到万世回头；"],
+      ["And you should, if you please, refuse", "但我背后总听见"],
+      ["Till the conversion of the Jews.", "时间驾着长翅的战车疾驰而来；"],
+      ["But at my back I always hear", "在我们面前，是无垠的永恒荒原，"],
+      ["Time's wingèd chariot hurrying near;", "那里再无美貌、也无歌喉可闻。"]
+    ]
+  },
+  {
+    id: 109,
+    title: { en: "On His Blindness", zh: "论我的失明" },
+    author: { en: "John Milton", zh: "约翰·弥尔顿" },
+    country: "英国",
+    type: ["人生哲理","宗教与灵性"],
+    content: [
+      ["When I consider how my light is spent,", "当我想到光明已耗尽，"],
+      ["Ere half my days, in this dark world and wide,", "未及半生，我却置身于这幽暗广大的世间；"],
+      ["And that one talent which is death to hide", "那份藏不得的才干"],
+      ["Lodged with me useless, though my soul more bent", "寄寓我身却无所施展，我的灵魂反更倾向"],
+      ["To serve therewith my Maker, and present", "用它来事奉造物主，并呈上"],
+      ["My true account, lest he returning chide;", "我的真实账目，免得他归来责备；"],
+      ["\"Doth God exact day-labour, light denied?\"", "“上帝会索取白日劳作，既剥我光明？”"],
+      ["I fondly ask. But Patience, to prevent", "我愚问。然耐心为遏止那怨言，"],
+      ["That murmur, soon replies, \"God doth not need", "旋即答道：“上帝不需人的工作，"],
+      ["Either man's work or his own gifts; who best", "亦不需他自己的礼物；谁最善于"],
+      ["Bear his mild yoke, they serve him best. His state", "承担他温和的轭，谁便服侍得最好。"],
+      ["Is kingly: thousands at his bidding speed", "他的国度如王者：千万人奉命疾行，"],
+      ["And post o'er land and ocean without rest;", "奔走陆海，永不停歇；"],
+      ["They also serve who only stand and wait.\"", "但那些仅仅站着等待的人，也是服侍。”"]
+    ]
+  },
+  {
+    id: 110,
+    title: { en: "The Soldier", zh: "士兵" },
+    author: { en: "Rupert Brooke", zh: "鲁珀特·布鲁克" },
+    country: "英国",
+    type: ["战争","思乡"],
+    content: [
+      ["If I should die, think only this of me:", "若我死去，请只这样想我："],
+      ["That there's some corner of a foreign field", "在异国的战场有一个角落，"],
+      ["That is for ever England. There shall be", "将永远属于英格兰。那里"],
+      ["In that rich earth a richer dust concealed;", "在沃土之下，埋着更富的尘；"],
+      ["A dust whom England bore, shaped, made aware,", "那尘是英格兰生的、塑的、使之觉悟的，"],
+      ["Gave, once, her flowers to love, her ways to roam,", "曾经她把花朵给他爱，把道路给他行；"],
+      ["A body of England's, breathing English air,", "一具英格兰的躯体，呼吸英格兰的空气，"],
+      ["Washed by the rivers, blest by suns of home.", "被故土的河水濯洗，受故乡的阳光祝福。"],
+      ["And think, this heart, all evil shed away,", "再想，这颗心，已拂去一切邪恶，"],
+      ["A pulse in the eternal mind, no less", "成了永恒心灵中的一次跳动，"],
+      ["Gives somewhere back the thoughts by England given;", "把英格兰给予的思想奉还："],
+      ["Her sights and sounds; dreams happy as her day;", "她的景与声；她白昼般幸福的梦；"],
+      ["And laughter, learnt of friends; and gentleness,", "从友人处学来的笑声；温柔；"],
+      ["In hearts at peace, under an English heaven.", "在安宁的心里，置身英伦天穹之下。"]
+    ]
+  },
+  {
+    id: 111,
+    title: { en: "Where the Mind is Without Fear", zh: "当心灵无所畏惧" },
+    author: { en: "Rabindranath Tagore", zh: "拉宾德拉纳特·泰戈尔" },
+    country: "印度",
+    type: ["自由","人生哲理"],
+    content: [
+      ["Where the mind is without fear and the head is held high;", "当心灵无所畏惧，头颅可以高昂；"],
+      ["Where knowledge is free;", "当知识自由流布；"],
+      ["Where the world has not been broken up into fragments", "当世界不再被割裂为碎片"],
+      ["By narrow domestic walls;", "被狭隘的藩篱所分隔；"],
+      ["Where words come out from the depth of truth;", "当言词来自真理的深处；"],
+      ["Where tireless striving stretches its arms towards perfection;", "当不懈的追求伸向完美；"],
+      ["Where the clear stream of reason has not lost its way", "当清明的理性之流不致迷途，"],
+      ["Into the dreary desert sand of dead habit;", "坠入死习的沉沙荒漠；"],
+      ["Where the mind is led forward by thee", "当你引领心灵不断向前，"],
+      ["Into ever-widening thought and action—", "迈向更开阔的思想与行动——"],
+      ["Into that heaven of freedom, my Father, let my country awake.", "在那自由的天国里，父啊，让我的祖国醒来。"]
+    ]
+  },
+  {
+    id: 112,
+    title: { en: "Rubaiyat (Selected Quatrains)", zh: "鲁拜集（选段）" },
+    author: { en: "Omar Khayyam / trans. Edward FitzGerald", zh: "奥马尔·海亚姆 / 费兹杰拉德英译" },
+    country: "伊朗",
+    type: ["人生哲理","自然"],
+    content: [
+      ["A Book of Verses underneath the Bough,", "树荫下有一册诗，"],
+      ["A Jug of Wine, a Loaf of Bread—and Thou", "一壶酒，一块面包——还有你"],
+      ["Beside me singing in the Wilderness—", "在这荒野与我相伴——"],
+      ["Oh, Wilderness were Paradise enow!", "啊，这荒野便已足以成天堂！"],
+      ["The Moving Finger writes; and, having writ,", "移动的手指一写便走，"],
+      ["Moves on: nor all your Piety nor Wit", "纵有虔诚与智慧"],
+      ["Shall lure it back to cancel half a Line,", "也唤不回它删去半行，"],
+      ["Nor all your Tears wash out a Word of it.", "纵有千行泪水也洗不掉一字。"]
+    ]
+  },
+  {
+    id: 113,
+    title: { en: "My Country (excerpt)", zh: "我的祖国（节选）" },
+    author: { en: "Dorothea Mackellar", zh: "多萝西娅·麦凯勒" },
+    country: "澳大利亚",
+    type: ["思乡","自然"],
+    content: [
+      ["I love a sunburnt country,", "我爱一片被日灼的国土，"],
+      ["A land of sweeping plains,", "一望无际的平原，"],
+      ["Of ragged mountain ranges,", "峻峭破碎的山脉，"],
+      ["Of droughts and flooding rains.", "干旱与暴雨交替。"],
+      ["I love her far horizons,", "我爱她那远远的天际，"],
+      ["I love her jewel-sea,", "我爱她那宝石般的海，"],
+      ["Her beauty and her terror—", "她的美，她的险——"],
+      ["The wide brown land for me!", "这片褐色的大地属于我。"]
+    ]
+  },
+  {
+    id: 114,
+    title: { en: "Not Understood (excerpt)", zh: "无人理解（节选）" },
+    author: { en: "Thomas Bracken", zh: "托马斯·布拉肯" },
+    country: "新西兰",
+    type: ["人生哲理"],
+    content: [
+      ["Not understood, we move along;", "无人理解，我们仍前行；"],
+      ["Amid a world of storm and song,", "在这风暴与歌声的世界之中，"],
+      ["Still hoping, longing, wondering why", "仍怀着希望、渴望、困惑——"],
+      ["We live and die, and such as I", "为何我们如此生、如此死，像我这样的"],
+      ["Are never understood.", "总是无人理解。"],
+      ["Not understood, we gather false", "无人理解，便据外表妄下结论；"],
+      ["Conclusions from the sight of faults;", "我们凭模糊所见来评判——"],
+      ["We judge by what is dimly seen—", "不是依据我们是谁，而是过去曾为何人——"],
+      ["Not what we are, but what have been—", "我们按过去而非当下来判断——"],
+      ["Not understood.", "无人理解。"]
+    ]
+  }
+];
+
+/* 追加到主库 */
+poetryDatabase.push(...EXTRA_POEMS);
+/* （可选）如果你已经加了本地持久化 saveDBToLocal()，可以顺手保存一下： */
+// try{ saveDBToLocal&&saveDBToLocal(); }catch(e){}
+
 
     // ========== DOM 引用 ==========
     const poemTitleEn = document.getElementById('poem-title-en');
