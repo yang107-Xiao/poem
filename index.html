@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>经典外文诗歌推荐 · 古风版</title>
-  <meta name="description" content="感受世界文学的魅力，品味经典诗歌的韵味（古风纸感界面）" />
+  <title>墨见千年</title>
+  <meta name="description" content="千年墨香，与你隔屏相逢" />
   <style>
     /* ========= 主题变量：古风·宣纸·朱砂 ========= */
     :root{
-      --ink: #2f4f4f;               /* 墨色（主色） */
+      --ink: #153b3b;               /* 墨色（主色） */
       --paper: #f7f1e3;             /* 宣纸底 */
       --paper-edge: #e6dcc8;        /* 宣纸边 */
-      --cinnabar: #b33a3a;          /* 朱砂点缀 */
+      --cinnabar: #0f947e;          /* 朱砂点缀 */
       --text: #2b2b2b;
       --muted: #6b6b6b;
       --shadow: rgba(0,0,0,.08);
@@ -47,7 +47,7 @@
       background:
         radial-gradient(ellipse at top left, rgba(255,255,255,.08), transparent 55%),
         radial-gradient(ellipse at bottom right, rgba(0,0,0,.08), transparent 55%),
-        linear-gradient(135deg, #2f4f4f, #3e6b6b);
+        linear-gradient(135deg, #275858, #2f6464);
       box-shadow: 0 6px 14px var(--shadow);
       overflow: hidden;
     }
@@ -238,12 +238,80 @@
       button:hover{ transform:none; }
       .toast{ transition:none; }
     }
+  /* === 现代·新中式·极简皮肤（覆盖原样式）=== */
+/* 配色更克制：墨黑 + 赤金 + 米白 */
+:root{
+  --ink: #111827;         /* 墨黑（主） */
+  --cinnabar: #c8a86b;    /* 赤金（点缀，替代大红） */
+  --paper: #faf9f6;       /* 米白（背景） */
+  --paper-edge: #ece7db;  /* 细边 */
+  --muted: #6b7280;       /* 次要文字 */
+  --card: #ffffff;        /* 卡片白 */
+  --shadow: rgba(0,0,0,.06); /* 更轻的阴影 */
+}
+
+/* 1) 全局：去纹理，UI 用无衬线；诗文保留衬线质感 */
+body{
+  background: var(--paper) !important; /* 覆盖原来的宣纸纹理 */
+  font-family: system-ui,-apple-system,"SF Pro SC","PingFang SC","Microsoft YaHei",
+               "Noto Sans SC","Source Han Sans SC",Arial,sans-serif !important;
+}
+/* 诗歌标题/正文仍用衬线，保留“文气” */
+.title-bilingual,.poetry-content{
+  font-family: "Source Han Serif SC","Noto Serif SC","Songti SC","SimSun",serif !important;
+}
+
+/* 2) 顶部：白底细边，去祥云叠层与浓阴影 */
+.site-header{
+  background:#fff !important; color: var(--ink) !important;
+  box-shadow:none !important; border-bottom:1px solid var(--paper-edge) !important;
+}
+.site-header::after{ display:none !important; }
+.site-title{ letter-spacing:.02em !important; }
+.subtitle{ opacity:.7 !important; letter-spacing:.04em !important; text-shadow:none !important; }
+
+/* 3) 卡片：去书脊/角花，轻描边+轻阴影 */
+.search-section,.poetry-card,.about-section{
+  border:1px solid var(--paper-edge) !important;
+  box-shadow:0 1px 3px var(--shadow) !important;
+  border-radius:12px !important;
+}
+.search-section::before{ display:none !important; } /* 关掉左侧书脊 */
+.corner{ display:none !important; }                /* 关掉角花 */
+
+/* 4) 表单与按钮：扁平/描边风格，减少动效 */
+input,select{
+  background:#fff !important; border:1px solid #e7e3d8 !important; border-radius:10px !important;
+}
+button{
+  border-radius:10px !important; padding:.6rem 1rem !important;
+  background: var(--ink) !important; color:#fff !important; box-shadow:none !important;
+}
+button.secondary{
+  background:#fff !important; color: var(--ink) !important;
+  border:1px solid #ddd7c6 !important;
+}
+button:hover{ transform:none !important; filter:brightness(1.02) !important; }
+
+/* 5) 文案层级：更清爽的字号与留白，去掉逐行动画 */
+.title-bilingual{ font-weight:600 !important; font-size:clamp(20px,2.2vw,24px) !important; }
+.author-bilingual{ color:var(--muted) !important; font-style:normal !important; }
+.poetry-header{ border-bottom:1px solid var(--paper-edge) !important; }
+.english-line{ font-size:1.08rem !important; line-height:1.8 !important; }
+.chinese-line{ font-size:1.02rem !important; color:#4b5563 !important; margin-left:0 !important; opacity:.95 !important; }
+.line-pair{ animation:none !important; opacity:1 !important; } /* 更静态、更现代 */
+.poetry-meta .meta-item{ background:#faf7f0 !important; border:1px solid var(--paper-edge) !important; }
+
+/* 6) 小细节：统一圆角 */
+.toast{ border-radius:10px !important; }
+@media (max-width:768px){ .poetry-card{ padding:1.2rem !important; } }
+
   </style>
 </head>
 <body>
   <header class="site-header" role="banner">
-    <h1 class="site-title">经典外文诗歌推荐</h1>
-    <p class="subtitle">感受世界文学的魅力 · 品味经典诗歌的韵味</p>
+    <h1 class="site-title">墨见千年</h1>
+    <p class="subtitle">千年墨香，与你隔屏相逢</p>
   </header>
 
   <main class="container" id="app">
@@ -290,6 +358,10 @@
         <button id="random-button" type="button" aria-label="随机选择一首诗">随机来一首</button>
         <button id="search-button" type="button" class="secondary" aria-label="执行搜索">搜索</button>
         <button id="clear-button" type="button" class="secondary" aria-label="清除筛选条件">清除筛选</button>
+        <button id="import-button" type="button" class="secondary">导入诗库</button>
+        <button id="export-button" type="button" class="secondary">导出诗库</button>
+<input id="import-file" type="file" accept="application/json,.json" hidden>
+
       </div>
     </section>
 
@@ -550,6 +622,10 @@
     const authorCountry = document.getElementById('author-country');
     const poetryLength = document.getElementById('poetry-length');
     const copyButton = document.getElementById('copy-button');
+    const importBtn = document.getElementById('import-button');
+    const exportBtn = document.getElementById('export-button');
+    const importFile = document.getElementById('import-file');
+
     const toastEl = document.getElementById('toast');
     const yearEl = document.getElementById('year');
 
@@ -733,6 +809,89 @@
       bindEvents();
       displayPoetry(initFromHashOrStorage());
     });
+    /* ========== 导入 / 导出辅助 ========== */
+
+// 取当前库的最大 id，用于给新诗分配 id
+function getMaxId(){
+  return poetryDatabase.reduce((max,p)=>Math.max(max, Number(p.id)||0), 0);
+}
+
+// 合并外部诗数组到 poetryDatabase，自动去重（按 英文标题+英文作者）
+function mergePoems(list){
+  if(!Array.isArray(list)) throw new Error('导入数据必须是数组');
+  const keyOf = p => ((p?.title?.en || '') + '|' + (p?.author?.en || '')).toLowerCase().trim();
+  const existingKeys = new Set(poetryDatabase.map(keyOf));
+  let added = 0, skipped = 0, nextId = getMaxId() + 1;
+
+  list.forEach(src=>{
+    try{
+      // 基本字段校验与清洗
+      const poem = {
+        id: Number.isFinite(src.id) ? src.id : nextId++,
+        title: { en: String(src.title?.en || '').trim(), zh: String(src.title?.zh || '').trim() },
+        author:{ en: String(src.author?.en||'').trim(), zh: String(src.author?.zh||'').trim() },
+        country: String(src.country || '').trim(),
+        type: Array.isArray(src.type) ? src.type.map(String) : [],
+        content: Array.isArray(src.content) ? src.content.map(pair => [String(pair[0]||''), String(pair[1]||'')]) : []
+      };
+      if(!poem.title.en || !poem.author.en || poem.content.length === 0){ skipped++; return; }
+
+      const k = keyOf(poem);
+      if(existingKeys.has(k)){ skipped++; return; }
+
+      poetryDatabase.push(poem);
+      existingKeys.add(k);
+      added++;
+    }catch(e){ skipped++; }
+  });
+
+  showToast(`导入完成：新增 ${added} 首，跳过 ${skipped} 首`);
+  // 导入后展示刚加入的最后一首，或随机一首
+  displayPoetry(poetryDatabase[poetryDatabase.length - 1] || getRandomPoetry());
+}
+
+// 触发导入：读取本地 JSON 文件
+function handleImportFile(e){
+  const file = e.target.files?.[0];
+  if(!file){ return; }
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const data = JSON.parse(String(reader.result));
+      const list = Array.isArray(data) ? data : (Array.isArray(data.poems) ? data.poems : null);
+      if(!list) throw new Error('JSON 顶层应为数组，或 { "poems": [...] }');
+      mergePoems(list);
+    }catch(err){
+      console.error(err);
+      showToast('导入失败：JSON 格式不正确');
+    }finally{
+      importFile.value = ''; // 允许下次选择同一文件
+    }
+  };
+  reader.readAsText(file, 'utf-8');
+}
+
+// 导出当前整库为 JSON 文件（下载）
+function exportCurrentDB(){
+  const dataStr = JSON.stringify(poetryDatabase, null, 2);
+  const blob = new Blob([dataStr], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'poems-export.json';
+  document.body.appendChild(a);
+  a.click();
+  URL.revokeObjectURL(url);
+  a.remove();
+  showToast('已下载 poems-export.json');
+}
+// 单独再绑一次，不改原 bindEvents
+document.addEventListener('DOMContentLoaded', ()=>{
+  importBtn?.addEventListener('click', ()=> importFile.click());
+  importFile?.addEventListener('change', handleImportFile);
+  exportBtn?.addEventListener('click', exportCurrentDB);
+});
+
   </script>
 </body>
 </html>
