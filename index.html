@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>经典外文诗歌推荐 · 古风版</title>
+  <meta name="description" content="感受世界文学的魅力，品味经典诗歌的韵味（古风纸感界面）" />
+  <style>
+    /* ========= 主题变量：古风·宣纸·朱砂 ========= */
+    :root{
+      --ink: #2f4f4f;               /* 墨色（主色） */
+      --paper: #f7f1e3;             /* 宣纸底 */
+      --paper-edge: #e6dcc8;        /* 宣纸边 */
+      --cinnabar: #b33a3a;          /* 朱砂点缀 */
+      --text: #2b2b2b;
+      --muted: #6b6b6b;
+      --shadow: rgba(0,0,0,.08);
+      --card: #fffdf7;
+    }
+
+    /* ========= 基础重置 ========= */
+    *,*::before,*::after{ box-sizing: border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      color:var(--text);
+      line-height:1.65;
+      /* 尽量使用本地可用中文字体：楷体/宋体优先，避免外链失败导致回退太难看 */
+      font-family: "STKaiti","KaiTi","Kaiti SC","Songti SC","SimSun","Source Han Serif SC","Noto Serif SC",serif;
+      /* 宣纸纹理：两层点阵 + 渐变 */
+      background:
+        radial-gradient(rgba(0,0,0,.015) 1px, transparent 1px) 0 0/12px 12px,
+        radial-gradient(rgba(0,0,0,.02) 1px, transparent 1px) 6px 6px/12px 12px,
+        linear-gradient(180deg, #faf6ed, var(--paper) 60%, #f5ead7);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .container{ max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem; }
+
+    /* ========= 站点头部：墨绿到青的晕染，叠加祥云细纹 ========= */
+    .site-header{
+      position: relative;
+      text-align: center;
+      padding: 2.25rem 1rem;
+      color: #fff;
+      background:
+        radial-gradient(ellipse at top left, rgba(255,255,255,.08), transparent 55%),
+        radial-gradient(ellipse at bottom right, rgba(0,0,0,.08), transparent 55%),
+        linear-gradient(135deg, #2f4f4f, #3e6b6b);
+      box-shadow: 0 6px 14px var(--shadow);
+      overflow: hidden;
+    }
+    .site-header::after{
+      /* 轻微祥云网纹（内联SVG），叠加微光 */
+      content:"";
+      position:absolute; inset:0;
+      background-image:
+        radial-gradient(closest-side, rgba(255,255,255,.05), transparent),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" viewBox="0 0 140 140"><g fill="none" stroke="%23ffffff22" stroke-width="1.2"><path d="M10 30c10-15 20-15 30 0s20 15 30 0 20-15 30 0 20 15 30 0"/></g></svg>');
+      background-repeat: repeat;
+      background-size: 40px 40px, 140px 140px;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      opacity: .5;
+    }
+    .site-title{
+      margin:0 0 .35rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      font-size: clamp(24px, 4vw, 34px);
+      /* 书卷感：楷体优先，退化到宋体/衬线 */
+      font-family: "STKaiti","KaiTi","Kaiti SC","Songti SC","SimSun",serif;
+    }
+    .subtitle{
+      margin:0;
+      opacity:.95;
+      letter-spacing: .15em;
+      font-size: .98rem;
+      text-shadow: 0 1px 0 rgba(0,0,0,.08);
+    }
+
+    /* ========= 搜索区：卡片+左侧朱砂书脊 ========= */
+    .search-section{
+      position: relative;
+      background: var(--card);
+      padding: 1.25rem;
+      border-radius: 12px;
+      border: 1px solid var(--paper-edge);
+      box-shadow: 0 6px 14px var(--shadow);
+      margin: 2rem 0 1.5rem;
+    }
+    .search-section::before{
+      content:"";
+      position:absolute; left:0; top:0; bottom:0; width:6px;
+      background: linear-gradient(180deg, #c85858, var(--cinnabar));
+      border-top-left-radius: 12px; border-bottom-left-radius: 12px;
+    }
+    .search-controls{
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+      gap: 1rem;
+      margin-bottom: .75rem;
+    }
+    .control-group{ display:flex; flex-direction:column; }
+    label{
+      font-weight:600; margin-bottom:.4rem; color: var(--ink); font-size:.95rem;
+      letter-spacing:.06em
+    }
+    input,select,button{
+      padding:.7rem .8rem; font-size:1rem;
+      border:1px solid var(--paper-edge);
+      border-radius:8px; background:#fffdfb;
+      transition: box-shadow .2s ease, border-color .2s ease, transform .15s ease;
+    }
+    input:focus,select:focus{
+      outline:none;
+      border-color: var(--cinnabar);
+      box-shadow: 0 0 0 3px rgba(179,58,58,.12);
+    }
+    .buttons{
+      display:flex; gap:.8rem; flex-wrap:wrap; justify-content:center; margin-top:.25rem;
+    }
+    button{
+      background: var(--cinnabar); color:#fff; border:none; cursor:pointer; font-weight:600;
+      padding:.7rem 1.25rem; border-radius: 999px;
+      box-shadow: 0 6px 12px var(--shadow);
+      transform: translateZ(0);
+    }
+    button:hover{ transform: translateY(-2px); }
+    button.secondary{ background: var(--ink); }
+    button.secondary:hover{ filter: brightness(1.08); }
+
+    /* ========= 诗歌卡片：宣纸+角花 ========= */
+    .poetry-card{
+      position:relative;
+      background: var(--card);
+      padding: 2rem 1.5rem 1.5rem;
+      border-radius: 14px;
+      border: 1px solid var(--paper-edge);
+      box-shadow: 0 10px 18px var(--shadow);
+      overflow:hidden;
+    }
+    /* 角花：四个小L形 */
+    .corner{ position:absolute; width:20px; height:20px; border:2px solid var(--cinnabar); }
+    .tl{ top:10px; left:10px; border-right:none; border-bottom:none; border-radius: 6px 0 0 0; }
+    .tr{ top:10px; right:10px; border-left:none; border-bottom:none; border-radius: 0 6px 0 0; }
+    .bl{ bottom:10px; left:10px; border-right:none; border-top:none; border-radius: 0 0 0 6px; }
+    .br{ bottom:10px; right:10px; border-left:none; border-top:none; border-radius: 0 0 6px 0; }
+
+    .poetry-header{
+      border-bottom: 1px dashed var(--paper-edge);
+      padding-bottom: .9rem;
+      margin-bottom: 1.2rem;
+    }
+    .title-bilingual,.author-bilingual{ margin-bottom: .5rem; }
+    .title-bilingual{
+      font-weight:700; color: var(--ink);
+      font-size: clamp(18px, 2.2vw, 22px);
+      letter-spacing: .06em;
+    }
+    .author-bilingual{
+      color: var(--cinnabar); font-style: italic;
+      font-size: 1rem;
+    }
+    .label{ font-weight:600; color: var(--muted); margin-right:.35rem; }
+
+    .poetry-content{ margin-top: 1rem; }
+    .line-pair{ margin-bottom:.7rem; opacity:0; animation: fadeIn .5s ease forwards; }
+    .english-line{ font-weight:600; color: var(--text); margin-bottom:.18rem; font-size:1.05rem; }
+    .chinese-line{ color: var(--muted); margin-left: 1rem; font-style: italic; font-size:1rem; }
+
+    @keyframes fadeIn{
+      from{ opacity:0; transform: translateY(8px); }
+      to{ opacity:1; transform: translateY(0); }
+    }
+
+    .poetry-meta{
+      margin-top: 1.1rem; padding-top:.8rem; border-top: 1px dashed var(--paper-edge);
+      display:flex; flex-wrap:wrap; gap:.6rem; font-size:.92rem; color:var(--muted);
+    }
+    .meta-item{
+      background: #f2e9d7;
+      padding:.25rem .7rem; border-radius: 999px;
+      border:1px solid var(--paper-edge);
+    }
+
+    .actions{ display:flex; justify-content:flex-end; margin-top:.6rem; }
+    .copy-button{
+      background: transparent; color: var(--ink);
+      border:1px solid var(--paper-edge);
+      padding:.5rem .8rem; font-size:.95rem; border-radius: 8px;
+    }
+    .copy-button:hover{ background:#f6efe2; }
+
+    /* ========= 关于区 ========= */
+    .about-section{
+      background: var(--card);
+      padding: 1.4rem;
+      border-radius: 12px;
+      border: 1px solid var(--paper-edge);
+      box-shadow: 0 6px 14px var(--shadow);
+      margin-top: 1.2rem;
+    }
+    .about-section h2{
+      color: var(--ink); margin:0 0 .6rem; font-size:1.25rem;
+      letter-spacing:.08em
+    }
+    .about-section p{ margin:.5rem 0; }
+
+    /* ========= 页脚 ========= */
+    footer{
+      text-align:center; padding: 1.6rem 1rem; color:#fff;
+      background: linear-gradient(135deg, #2f4f4f, #395f5f);
+      margin-top: 2rem;
+    }
+    footer p{ opacity:.9; font-size:.95rem; margin:0; letter-spacing:.05em }
+
+    /* ========= Toast（状态提示） ========= */
+    .toast{
+      position: fixed; left:50%; bottom: 24px; transform: translateX(-50%) translateY(20px);
+      background: rgba(0,0,0,.75); color:#fff; padding:.55rem .9rem; border-radius: 8px;
+      font-size: .95rem; opacity:0; pointer-events:none; transition: all .25s ease; z-index: 9999;
+    }
+    .toast.show{ opacity:1; transform: translateX(-50%) translateY(0); }
+
+    /* ========= 响应式 ========= */
+    @media (max-width: 768px){
+      .container{ padding: 1.2rem .9rem; }
+      .poetry-card{ padding: 1.4rem 1rem 1rem; }
+      .english-line{ font-size: 1rem; }
+      .chinese-line{ margin-left:.6rem; }
+    }
+
+    /* ========= 低动效偏好 ========= */
+    @media (prefers-reduced-motion: reduce){
+      .line-pair{ animation: none; opacity:1; }
+      button:hover{ transform:none; }
+      .toast{ transition:none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <h1 class="site-title">经典外文诗歌推荐</h1>
+    <p class="subtitle">感受世界文学的魅力 · 品味经典诗歌的韵味</p>
+  </header>
+
+  <main class="container" id="app">
+    <!-- 搜索与筛选 -->
+    <section class="search-section" aria-label="筛选条件">
+      <div class="search-controls">
+        <div class="control-group">
+          <label for="search-term">搜索关键词</label>
+          <input type="text" id="search-term" placeholder="输入诗人、诗名或内容..." autocomplete="off" />
+        </div>
+        <div class="control-group">
+          <label for="poetry-type">诗歌类型</label>
+          <select id="poetry-type">
+            <option value="">全部类型</option>
+            <option value="爱情">爱情</option>
+            <option value="自然">自然</option>
+            <option value="人生哲理">人生哲理</option>
+            <option value="思乡">思乡</option>
+            <option value="自由">自由</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="author-country">诗人国籍</label>
+          <select id="author-country">
+            <option value="">全部国籍</option>
+            <option value="英国">英国</option>
+            <option value="美国">美国</option>
+            <option value="爱尔兰">爱尔兰</option>
+            <option value="法国">法国</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="poetry-length">诗歌长度</label>
+          <select id="poetry-length">
+            <option value="">全部长度</option>
+            <option value="short">短诗（≤12行）</option>
+            <option value="medium">中等长度（13-24行）</option>
+            <option value="long">长诗（≥25行）</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button id="random-button" type="button" aria-label="随机选择一首诗">随机来一首</button>
+        <button id="search-button" type="button" class="secondary" aria-label="执行搜索">搜索</button>
+        <button id="clear-button" type="button" class="secondary" aria-label="清除筛选条件">清除筛选</button>
+      </div>
+    </section>
+
+    <!-- 诗歌展示 -->
+    <section class="poetry-section" id="poetry-section" aria-live="polite">
+      <article class="poetry-card" id="poetry-card">
+        <span class="corner tl" aria-hidden="true"></span>
+        <span class="corner tr" aria-hidden="true"></span>
+        <span class="corner bl" aria-hidden="true"></span>
+        <span class="corner br" aria-hidden="true"></span>
+
+        <div class="poetry-header">
+          <h2 class="title-bilingual">
+            <span class="label">诗名双语｜</span>
+            <span id="poem-title-en"></span> ｜ <span id="poem-title-zh"></span>
+          </h2>
+          <div class="author-bilingual">
+            <span class="label">作者双语｜</span>
+            <span id="poem-author-en"></span> ｜ <span id="poem-author-zh"></span>
+          </div>
+        </div>
+
+        <div class="poetry-content" id="poetry-content"><!-- 动态生成 --></div>
+        <div class="poetry-meta" id="poetry-meta"><!-- 动态生成 --></div>
+
+        <div class="actions">
+          <button class="copy-button" id="copy-button" type="button" aria-label="复制诗歌">复制诗歌</button>
+        </div>
+      </article>
+    </section>
+
+    <section class="about-section">
+      <h2>关于本网站</h2>
+      <p>本网站致力于分享世界经典英文诗歌，为诗歌爱好者提供一个欣赏与探索的平台。</p>
+      <p>我们精选莎士比亚、雪莱、狄金森、弗罗斯特等名家作品，提供权威中文译本的逐句对照，便于学习与欣赏。</p>
+      <p>你可随机浏览，也可通过搜索与筛选定位到喜欢的主题、风格或诗人。</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> 经典外文诗歌推荐 · 纸上风雅</p>
+  </footer>
+
+  <!-- 轻量状态提示 -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // ========== 数据库 ==========
+    const poetryDatabase = [
+      {
+        id: 1,
+        title: { en: "Sonnet 18", zh: "十四行诗第18首" },
+        author: { en: "William Shakespeare", zh: "威廉·莎士比亚" },
+        country: "英国",
+        type: ["爱情", "人生哲理"],
+        content: [
+          ["Shall I compare thee to a summer's day?", "我怎能将你比作夏日？"],
+          ["Thou art more lovely and more temperate.", "你更可爱，也更温婉。"],
+          ["Rough winds do shake the darling buds of May,", "狂风会把五月的娇蕊摧残，"],
+          ["And summer's lease hath all too short a date.", "夏日租约也转瞬即满。"],
+          ["Sometime too hot the eye of heaven shines,", "有时天眼如炬光芒太烈，"],
+          ["And often is his gold complexion dimmed;", "常常又遮起金色的容颜；"],
+          ["And every fair from fair sometime declines,", "一切美好终会凋残或湮灭，"],
+          ["By chance or nature's changing course untrimmed;", "偶遇或自然变化使之这般；"],
+          ["But thy eternal summer shall not fade,", "但你的永恒夏日不会消退，"],
+          ["Nor lose possession of that fair thou ow'st;", "你的美也不会就此消散；"],
+          ["Nor shall Death brag thou wander'st in his shade,", "死神也不敢夸口将你幽禁，"],
+          ["When in eternal lines to time thou grow'st:", "当你在永恒诗行中与时共长："],
+          ["So long as men can breathe or eyes can see,", "只要人类还在呼吸，眼睛还在看，"],
+          ["So long lives this, and this gives life to thee.", "这首诗就活着，使你的生命延续。"]
+        ]
+      },
+      {
+        id: 2,
+        title: { en: "The Road Not Taken", zh: "未选择的路" },
+        author: { en: "Robert Frost", zh: "罗伯特·弗罗斯特" },
+        country: "美国",
+        type: ["人生哲理", "自由"],
+        content: [
+          ["Two roads diverged in a yellow wood,", "黄色的林子里有两条路，"],
+          ["And sorry I could not travel both", "可惜我不能同时去涉足，"],
+          ["And be one traveler, long I stood", "我久久伫立，作为一个旅人，"],
+          ["And looked down one as far as I could", "极目望去，一条路蜿蜒向前，"],
+          ["To where it bent in the undergrowth;", "消失在丛林深处。"],
+          ["Then took the other, as just as fair,", "然后我选择了另一条路，同样宜人，"],
+          ["And having perhaps the better claim,", "或许更值得选择，"],
+          ["Because it was grassy and wanted wear;", "因为它荒草丛生，人迹罕至；"],
+          ["Though as for that the passing there", "虽然在这两条小路上，"],
+          ["Had worn them really about the same,", "实际上已被踩踏得差不多，"],
+          ["And both that morning equally lay", "那天清晨两条路都铺满落叶，"],
+          ["In leaves no step had trodden black.", "尚未有脚步把它们踩黑。"],
+          ["Oh, I kept the first for another day!", "啊，我把第一条路留给他日！"],
+          ["Yet knowing how way leads on to way,", "但我知道路径绵延无尽头，"],
+          ["I doubted if I should ever come back.", "恐怕我难以再重返旧地。"],
+          ["I shall be telling this with a sigh", "也许在多年后的某个时刻，"],
+          ["Somewhere ages and ages hence:", "我会轻声叹息着讲述这一切："],
+          ["Two roads diverged in a wood, and I—", "林子里分出两条路，而我——"],
+          ["I took the one less traveled by,", "我选择了人迹更少的一条，"],
+          ["And that has made all the difference.", "从此决定了我一生的道路。"]
+        ]
+      },
+      {
+        id: 3,
+        title: { en: "Ode to the West Wind", zh: "西风颂" },
+        author: { en: "Percy Bysshe Shelley", zh: "珀西·比希·雪莱" },
+        country: "英国",
+        type: ["自然", "自由"],
+        content: [
+          ["O wild West Wind, thou breath of Autumn's being,", "哦，狂野的西风，你是秋日的气息，"],
+          ["Thou, from whose unseen presence the leaves dead", "你无形地驱走残叶，"],
+          ["Are driven, like ghosts from an enchanter fleeing,", "像巫师驱使的群鬼纷纷逃避，"],
+          ["Yellow, and black, and pale, and hectic red,", "黄的，黑的，苍白的，惨红的，"],
+          ["Pestilence-stricken multitudes: O thou,", "这些染上瘟疫的无数尸体：哦，你，"],
+          ["Who chariotest to their dark wintry bed", "你把它们驱赶到黑暗的冬床，"],
+          ["The winged seeds, where they lie cold and low,", "那些带翅的种子，躺在那里又冷又低，"],
+          ["Each like a corpse within its grave, until", "每粒都像坟墓中的尸体，直到，"],
+          ["Thine azure sister of the Spring shall blow", "春天的碧空姐妹为它们吹起号角，"],
+          ["Her clarion o'er the dreaming earth, and fill", "掠过沉睡的大地，使它们苏醒，"],
+          ["(Driving sweet buds like flocks to feed in air)", "（催发嫩芽如群羊在空中觅食）"],
+          ["With living hues and odours plain and hill:—", "将平原和山峦充满生命的色彩和芬芳：——"]
+        ]
+      },
+      {
+        id: 4,
+        title: { en: "Because I could not stop for Death", zh: "因为我不能停下来等待死神" },
+        author: { en: "Emily Dickinson", zh: "艾米莉·狄金森" },
+        country: "美国",
+        type: ["人生哲理"],
+        content: [
+          ["Because I could not stop for Death,—", "因为我不能停下来等待死神，——"],
+          ["He kindly stopped for me;—", "他好意地停下来等我；——"],
+          ["The Carriage held but just Ourselves—", "马车只载着我们两人——"],
+          ["And Immortality.", "还有永生。"],
+          ["We slowly drove, he knew no haste,", "我们缓缓行驶，他不慌不忙，"],
+          ["And I had put away", "我也抛开了，"],
+          ["My labor, and my leisure too,", "我的工作，我的闲暇，"],
+          ["For His Civility—", "因为他彬彬有礼——"],
+          ["We passed the School, where Children strove", "我们经过学校，孩子们正在课间休息，"],
+          ["At Recess—in the Ring—", "在操场上打环游戏——"],
+          ["We passed the Fields of Gazing Grain—", "我们经过谷物凝望着的田野——"],
+          ["We passed the Setting Sun—", "我们经过落日——"]
+        ]
+      },
+      {
+        id: 5,
+        title: { en: "When You Are Old", zh: "当你老了" },
+        author: { en: "William Butler Yeats", zh: "威廉·巴特勒·叶芝" },
+        country: "爱尔兰",
+        type: ["爱情"],
+        content: [
+          ["When you are old and grey and full of sleep,", "当你老了，头白了，睡思昏沉，"],
+          ["And nodding by the fire, take down this book,", "炉火旁打盹，请取下这部诗歌，"],
+          ["And slowly read, and dream of the soft look", "慢慢读，回想你过去眼神的柔和，"],
+          ["Your eyes had once, and of their shadows deep;", "回想它们昔日浓重的阴影；"],
+          ["How many loved your moments of glad grace,", "多少人爱你青春欢畅的时辰，"],
+          ["And loved your beauty with love false or true,", "爱慕你的美丽，假意或真心，"],
+          ["But one man loved the pilgrim soul in you,", "只有一个人爱你那朝圣者的灵魂，"],
+          ["And loved the sorrows of your changing face;", "爱你衰老了的脸上痛苦的皱纹；"],
+          ["And bending down beside the glowing bars,", "垂下头来，在红光闪耀的炉子旁，"],
+          ["Murmur, a little sadly, how Love fled", "凄然地轻轻诉说那爱情的消逝，"],
+          ["And paced upon the mountains overhead", "在头顶的山上它缓缓踱着步子，"],
+          ["And hid his face amid a crowd of stars.", "在一群星星中间隐藏着脸庞。"]
+        ]
+      },
+      {
+        id: 6,
+        title: { en: "A Red, Red Rose", zh: "一朵红红的玫瑰" },
+        author: { en: "Robert Burns", zh: "罗伯特·彭斯" },
+        country: "英国",
+        type: ["爱情"],
+        content: [
+          ["O my Luve is like a red, red rose", "啊，我的爱人像一朵红红的玫瑰，"],
+          ["That's newly sprung in June;", "在六月里初开绽放；"],
+          ["O my Luve is like the melodie", "啊，我的爱人像一首美妙的乐曲，"],
+          ["That's sweetly played in tune.", "旋律和谐而悠扬。"],
+          ["So fair art thou, my bonnie lass,", "我的好姑娘，你是如此美丽，"],
+          ["So deep in luve am I;", "我是如此深爱着你；"],
+          ["And I will luve thee still, my dear,", "亲爱的，我会永远爱你，"],
+          ["Till a' the seas gang dry.", "直到海水都干涸。"]
+        ]
+      },
+      {
+        id: 7,
+        title: { en: "I Wandered Lonely as a Cloud", zh: "我孤独地漫游，像一朵云" },
+        author: { en: "William Wordsworth", zh: "威廉·华兹华斯" },
+        country: "英国",
+        type: ["自然"],
+        content: [
+          ["I wandered lonely as a cloud", "我孤独地漫游，像一朵云，"],
+          ["That floats on high o'er vales and hills,", "高高地漂浮在溪谷山巅，"],
+          ["When all at once I saw a crowd,", "忽然间我望见一片，"],
+          ["A host, of golden daffodils;", "一大片金黄的水仙；"],
+          ["Beside the lake, beneath the trees,", "在湖畔，在树下，"],
+          ["Fluttering and dancing in the breeze.", "在微风中摇曳起舞。"]
+        ]
+      },
+      {
+        id: 8,
+        title: { en: "Do Not Go Gentle into That Good Night", zh: "不要温和地走进那个良夜" },
+        author: { en: "Dylan Thomas", zh: "狄兰·托马斯" },
+        country: "英国",
+        type: ["人生哲理"],
+        content: [
+          ["Do not go gentle into that good night,", "不要温和地走进那个良夜，"],
+          ["Old age should burn and rave at close of day;", "老年应当在日暮时燃烧咆哮；"],
+          ["Rage, rage against the dying of the light.", "怒斥，怒斥光明的消逝。"],
+          ["Though wise men at their end know dark is right,", "虽然智慧的人临终时懂得黑暗有理，"],
+          ["Because their words had forked no lightning they", "因为他们的话没有迸发出闪电，他们，"],
+          ["Do not go gentle into that good night.", "也并不温和地走进那个良夜。"]
+        ]
+      },
+      {
+        id: 9,
+        title: { en: "To Autumn", zh: "秋颂" },
+        author: { en: "John Keats", zh: "约翰·济慈" },
+        country: "英国",
+        type: ["自然"],
+        content: [
+          ["Season of mists and mellow fruitfulness,", "雾气洋溢、果实圆熟的秋，"],
+          ["Close bosom-friend of the maturing sun;", "你和成熟的太阳成为密友；"],
+          ["Conspiring with him how to load and bless", "你们密谋用累累果实缀满茅屋檐下，"],
+          ["With fruit the vines that round the thatch-eves run;", "让爬满的葡萄藤胀大；"],
+          ["To bend with apples the moss'd cottage-trees,", "让苹果压弯农家苔绿的树枝，"],
+          ["And fill all fruit with ripeness to the core;", "让所有果实都熟透到心；"]
+        ]
+      },
+      {
+        id: 10,
+        title: { en: "Hope is the thing with feathers", zh: "希望是长着羽毛的东西" },
+        author: { en: "Emily Dickinson", zh: "艾米莉·狄金森" },
+        country: "美国",
+        type: ["人生哲理"],
+        content: [
+          ["Hope is the thing with feathers", "希望是长着羽毛的东西，"],
+          ["That perches in the soul,", "它栖息在灵魂里，"],
+          ["And sings the tune without the words,", "唱着无词的歌儿，"],
+          ["And never stops at all,", "永远不会停息，"],
+          ["And sweetest in the gale is heard;", "暴风雨中歌声最甜美；"],
+          ["And sore must be the storm", "暴风雨必然十分猛烈，"],
+          ["That could abash the little bird", "才能使那小鸟惊悸，"],
+          ["That kept so many warm.", "它曾让多少人感到温暖。"]
+        ]
+      }
+    ];
+
+    // ========== DOM 引用 ==========
+    const poemTitleEn = document.getElementById('poem-title-en');
+    const poemTitleZh = document.getElementById('poem-title-zh');
+    const poemAuthorEn = document.getElementById('poem-author-en');
+    const poemAuthorZh = document.getElementById('poem-author-zh');
+    const poetryContent = document.getElementById('poetry-content');
+    const poetryMeta = document.getElementById('poetry-meta');
+    const randomButton = document.getElementById('random-button');
+    const searchButton = document.getElementById('search-button');
+    const clearButton = document.getElementById('clear-button');
+    const searchTerm = document.getElementById('search-term');
+    const poetryType = document.getElementById('poetry-type');
+    const authorCountry = document.getElementById('author-country');
+    const poetryLength = document.getElementById('poetry-length');
+    const copyButton = document.getElementById('copy-button');
+    const toastEl = document.getElementById('toast');
+    const yearEl = document.getElementById('year');
+
+    let currentPoem = null;
+
+    // ========== 工具函数 ==========
+    function showToast(msg){
+      if(!toastEl) return;
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      setTimeout(()=>toastEl.classList.remove('show'), 1400);
+    }
+    function setYear(){ if(yearEl) yearEl.textContent = new Date().getFullYear(); }
+
+    // ========== 展示诗歌 ==========
+    function displayPoetry(poem){
+      if(!poem) return;
+      currentPoem = poem;
+      // 清空
+      poetryContent.innerHTML = '';
+      poetryMeta.innerHTML = '';
+
+      // 标题与作者
+      poemTitleEn.textContent = poem.title.en;
+      poemTitleZh.textContent = `《${poem.title.zh}》`;
+      poemAuthorEn.textContent = poem.author.en;
+      poemAuthorZh.textContent = poem.author.zh;
+
+      // 内容
+      poem.content.forEach((pair, i)=>{
+        const linePair = document.createElement('div');
+        linePair.className = 'line-pair';
+        linePair.style.animationDelay = `${i * 0.06}s`;
+
+        const en = document.createElement('div');
+        en.className = 'english-line';
+        en.textContent = pair[0];
+
+        const zh = document.createElement('div');
+        zh.className = 'chinese-line';
+        zh.textContent = pair[1];
+
+        linePair.appendChild(en);
+        linePair.appendChild(zh);
+        poetryContent.appendChild(linePair);
+      });
+
+      // 元数据
+      const countryMeta = document.createElement('div');
+      countryMeta.className = 'meta-item';
+      countryMeta.textContent = `国籍：${poem.country}`;
+      const typeMeta = document.createElement('div');
+      typeMeta.className = 'meta-item';
+      typeMeta.textContent = `类型：${poem.type.join('、')}`;
+      const lengthMeta = document.createElement('div');
+      lengthMeta.className = 'meta-item';
+      lengthMeta.textContent = `行数：${poem.content.length}`;
+
+      poetryMeta.appendChild(countryMeta);
+      poetryMeta.appendChild(typeMeta);
+      poetryMeta.appendChild(lengthMeta);
+
+      // 标题栏 & 可分享
+      document.title = `${poem.title.en} · ${poem.title.zh} — 经典外文诗歌推荐`;
+      location.hash = `id=${poem.id}`;
+      try{ localStorage.setItem('lastPoemId', String(poem.id)); }catch(e){}
+
+      // 滚动到卡片
+      document.getElementById('poetry-card')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ========== 随机 ==========
+    function getRandomPoetry(){
+      return poetryDatabase[Math.floor(Math.random() * poetryDatabase.length)];
+    }
+
+    // ========== 搜索 ==========
+    function searchPoetry(){
+      const term = (searchTerm.value || '').toLowerCase().trim();
+      const type = poetryType.value;
+      const country = authorCountry.value;
+      const length = poetryLength.value;
+
+      const results = poetryDatabase.filter(poem=>{
+        const matchesTerm = !term ||
+          poem.title.en.toLowerCase().includes(term) ||
+          poem.title.zh.includes(term) ||
+          poem.author.en.toLowerCase().includes(term) ||
+          poem.author.zh.includes(term) ||
+          poem.content.some(line =>
+            line[0].toLowerCase().includes(term) || line[1].includes(term)
+          );
+
+        const matchesType = !type || poem.type.includes(type);
+        const matchesCountry = !country || poem.country === country;
+
+        let matchesLength = true;
+        if (length === 'short') matchesLength = poem.content.length <= 12;
+        else if (length === 'medium') matchesLength = poem.content.length > 12 && poem.content.length <= 24;
+        else if (length === 'long') matchesLength = poem.content.length >= 25;
+
+        return matchesTerm && matchesType && matchesCountry && matchesLength;
+      });
+
+      if(results.length){
+        displayPoetry(results[Math.floor(Math.random() * results.length)]);
+      }else{
+        showToast('没有找到匹配的诗歌，试试改改条件～');
+      }
+    }
+
+    // ========== 清除 ==========
+    function clearFilters(){
+      searchTerm.value = '';
+      poetryType.value = '';
+      authorCountry.value = '';
+      poetryLength.value = '';
+      displayPoetry(getRandomPoetry());
+      searchTerm.focus();
+    }
+
+    // ========== 复制 ==========
+    async function copyPoetry(){
+      const title = `${poemTitleEn.textContent} | ${poemTitleZh.textContent}`;
+      const author = `${poemAuthorEn.textContent} | ${poemAuthorZh.textContent}`;
+      let content = `诗名双语｜${title}\n作者双语｜${author}\n—— 逐句对照 ——\n`;
+      document.querySelectorAll('.line-pair').forEach(lp=>{
+        const en = lp.querySelector('.english-line')?.textContent ?? '';
+        const zh = lp.querySelector('.chinese-line')?.textContent ?? '';
+        content += `${en}\n${zh}\n`;
+      });
+
+      try{
+        await navigator.clipboard.writeText(content);
+        showToast('已复制到剪贴板');
+      }catch(err){
+        // 兼容旧环境
+        try{
+          const ta = document.createElement('textarea');
+          ta.value = content;
+          ta.style.position='fixed'; ta.style.opacity='0';
+          document.body.appendChild(ta);
+          ta.focus(); ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          showToast('已复制（兼容模式）');
+        }catch(e){
+          showToast('复制失败，请手动复制');
+        }
+      }
+    }
+
+    // ========== 初始化 ==========
+    function initFromHashOrStorage(){
+      const m = location.hash.match(/id=(\d+)/);
+      let poem = null;
+      if(m && m[1]){
+        poem = poetryDatabase.find(p=>String(p.id) === m[1]);
+      }
+      if(!poem){
+        try{
+          const lastId = localStorage.getItem('lastPoemId');
+          if(lastId) poem = poetryDatabase.find(p=>String(p.id) === lastId);
+        }catch(e){}
+      }
+      return poem || getRandomPoetry();
+    }
+
+    function bindEvents(){
+      randomButton.addEventListener('click', ()=>displayPoetry(getRandomPoetry()));
+      searchButton.addEventListener('click', searchPoetry);
+      clearButton.addEventListener('click', clearFilters);
+      copyButton.addEventListener('click', copyPoetry);
+      // Enter 回车触发搜索
+      searchTerm.addEventListener('keydown', e=>{ if(e.key === 'Enter') searchPoetry(); });
+    }
+
+    // DOM 就绪
+    document.addEventListener('DOMContentLoaded', ()=>{
+      setYear();
+      bindEvents();
+      displayPoetry(initFromHashOrStorage());
+    });
+  </script>
+</body>
+</html>
